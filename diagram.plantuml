@@ -1,0 +1,36 @@
+@startuml "Conversor de Moedas"
+package org.jciterceros {
+    class Main {
+        +main(String[] args)
+    }
+
+    class CurrencyConverter {
+        -CurrencyApiService apiService
+        +CurrencyConverter(CurrencyApiService apiService)
+        +convert(String fromCurrency, String toCurrency, double amount) : double
+    }
+
+    class CurrencyConverterApp {
+        -CurrencyConverter converter
+        +CurrencyConverterApp(CurrencyConverter converter)
+        +run()
+        -getFromCurrency(int option) : String
+        -getToCurrency(int option) : String
+    }
+
+    interface CurrencyApiService {
+        +getExchangeRates(String fromCurrency) : String
+    }
+
+    class ExchangeRateApiService {
+        -String baseUrl
+        +ExchangeRateApiService(String baseUrl)
+        +getExchangeRates(String fromCurrency) : String
+    }
+
+    Main --> CurrencyConverterApp
+    CurrencyConverterApp --> CurrencyConverter
+    CurrencyConverter --> CurrencyApiService
+    CurrencyApiService <|.. ExchangeRateApiService
+}
+@enduml
